@@ -3,6 +3,7 @@ package jm.task.core.jdbc.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 
 /**
  * Подключение к базе mySql.
@@ -18,8 +19,7 @@ public class Util {
     public static Connection getConnection() {
         try {
             Class.forName(DRIVER);
-            Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            return connection;
+            return DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -30,6 +30,27 @@ public class Util {
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    public static void executeSql(String sql) {
+        Connection connection = Util.getConnection();
+        Savepoint savepointOne = null;
+
+        try {
+            connection.setAutoCommit(false);
+            savepointOne = connection.setSavepoint("SavepointOne");
+            connection.createStatement().execute(sql);
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback(savepointOne);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+        } finally {
+            Util.closeConnection(connection);
         }
     }
 
