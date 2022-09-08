@@ -1,14 +1,6 @@
 package jm.task.core.jdbc.util;
-import java.util.Properties;
 
 import jm.task.core.jdbc.model.User;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
-import org.hibernate.service.ServiceRegistry;
-
-import org.hibernate.Cache;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -37,7 +29,7 @@ public class Util {
             try {
                 Configuration configuration = new Configuration();
 
-                // Hibernate settings equivalent to hibernate.cfg.xml's properties
+
                 Properties settings = new Properties();
                 settings.put(Environment.DRIVER, DRIVER);
                 //jdbc:mysql://localhost:3306/mydbtest?serverTimezone=Europe/Moscow&useSSL=false
